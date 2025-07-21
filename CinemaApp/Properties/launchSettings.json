@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "CinemaApp": {
+      "commandName": "MsixPackage"
+    }
+  }
+}
