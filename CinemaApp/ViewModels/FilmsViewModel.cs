@@ -18,16 +18,17 @@ namespace CinemaApp.ViewModels
         }
 
 
-        public async Task LoadFilmsAsync()
+        public async Task LoadFilmsAsync(int offset)
         {
-            int pages = 1;
-            var films = await _filmService.GetFilmsAsync();
-            if (films != null)
+            var films = await _filmService.GetFilmsAsync(offset);
+            if (films == null)
             {
-                foreach (var film in films)
-                {
-                    Films.Add(film);
-                }
+                return;
+            }
+
+            foreach (var film in films)
+            {
+                Films.Add(film);
             }
         }
 

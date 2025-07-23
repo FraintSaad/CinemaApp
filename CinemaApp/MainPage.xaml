@@ -69,7 +69,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image Source="{x:Bind PosterUrl}" 
+                            <Image Source="{x:Bind PosterUrlPreview}" 
                                    Grid.Column="0"
                                    Stretch="Fill" />
 

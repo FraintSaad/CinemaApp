@@ -28,7 +28,7 @@ namespace CinemaApp
         {
             base.OnNavigatedTo(e);
 
-            await _filmsViewModel.LoadFilmsAsync();
+            await _filmsViewModel.LoadFilmsAsync(0);
         }
 
         //private async Task ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
