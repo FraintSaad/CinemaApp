@@ -6,6 +6,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Data.Context;
 using Data.Entities;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CinemaApp
 {
@@ -84,7 +86,7 @@ namespace CinemaApp
                 NameEn = film.NameEn ?? string.Empty,
                 NameOriginal = film.NameOriginal  ?? string.Empty,
                 PosterUrlPreview = film.PosterUrlPreview ?? string.Empty,
-                Countries = film.Countries != null ? string.Join(",", film.Countries) : string.Empty,
+                Countries = film.Countries != null ? string.Join(",", film.Countries.Select(c => c.Name).ToArray()) : string.Empty,
                 Genres = film.Genres != null ? string.Join(",", film.Genres) : string.Empty,
                 RatingImdb = film.RatingImdb,
                 RatingKinopoisk = film.RatingKinopoisk,

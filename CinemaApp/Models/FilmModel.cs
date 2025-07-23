@@ -17,5 +17,7 @@ namespace CinemaApp.Models
         public string? Type { get; set; }
         public string? PosterUrl { get; set; }
         public string? PosterUrlPreview { get; set; }
+
+
     }
 }
