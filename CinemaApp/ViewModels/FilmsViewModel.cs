@@ -1,5 +1,5 @@
 ﻿using CinemaApp.Models;
-using CinemaApp.Shared.Services;
+using CinemaApp.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;

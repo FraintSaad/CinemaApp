@@ -12,7 +12,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace CinemaApp.Shared.Services
+namespace CinemaApp.Services
 {
     public class FilmService
     {
@@ -48,7 +48,7 @@ namespace CinemaApp.Shared.Services
             catch (Exception ex)
             {
                 Debug.WriteLine($"Ошибка десериализации: {ex.Message} ");
-                return null;
+                throw;
             }
         }
     }

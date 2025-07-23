@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Data.Context;
+using Microsoft.EntityFrameworkCore;
+using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -19,6 +21,8 @@ namespace CinemaApp
         public App()
         {
             InitializeComponent();
+            var dbContext = new FilmsDbContext();
+            dbContext.Database.Migrate();
 
             Suspending += OnSuspending;
         }
