@@ -1,13 +1,13 @@
 ﻿using CinemaApp.Models;
-using CinemaApp.Shared.Services;
+using CinemaApp.Services;
 using CinemaApp.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Data.Context;
+using Data.Entities;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CinemaApp
 {
@@ -15,23 +15,20 @@ namespace CinemaApp
     {
         private readonly FilmService _filmService;
         private readonly FilmsViewModel _filmsViewModel;
-        
+
         public MainPage()
         {
             this.InitializeComponent();
             DataContext = _filmsViewModel;
             _filmService = new FilmService();
             _filmsViewModel = new FilmsViewModel();
-
-
         }
-
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            await _filmsViewModel.LoadFilmsAsync();
 
+            await _filmsViewModel.LoadFilmsAsync(0);
         }
 
         //private async Task ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
@@ -64,19 +61,45 @@ namespace CinemaApp
         //    }
         //}
 
-        private void FavoritesBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(FavoritesPage));
         }
 
-        private void MainPageBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void MainPageBtn_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void addToFavoritesBtn_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void addToFavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
+            // Добавить фильм в избранное
 
+            // Получить фильм на котором нажата кнопка
+            var film = (((Button)sender).DataContext as FilmModel)!;
+
+            // Создать FilmEntity и заполнить его данными из FilmModel
+            var filmEntity = new FilmEntity
+            {
+                KinopoiskId = film.KinopoiskId,
+                NameRu = film.NameRu ?? string.Empty,
+                NameEn = film.NameEn ?? string.Empty,
+                NameOriginal = film.NameOriginal  ?? string.Empty,
+                PosterUrlPreview = film.PosterUrlPreview ?? string.Empty,
+                Countries = film.Countries != null ? string.Join(",", film.Countries.Select(c => c.Name).ToArray()) : string.Empty,
+                Genres = film.Genres != null ? string.Join(",", film.Genres) : string.Empty,
+                RatingImdb = film.RatingImdb,
+                RatingKinopoisk = film.RatingKinopoisk,
+                Year = film.Year,
+                Type = film.Type ?? string.Empty,
+            };
+
+            // Добавить FilmEntity в базу данных
+            using (var dbContext = new FilmsDbContext())
+            {
+                dbContext.FavoriteFilms.Add(filmEntity);
+                dbContext.SaveChanges();
+            }
         }
     }
 }

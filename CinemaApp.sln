@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp", "CinemaApp\CinemaApp.csproj", "{F86B78C1-1EDC-403C-A2A7-60EBAFD57CDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{66BD5846-F343-4926-ADCC-788558FFD702}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,18 @@ Global
 		{F86B78C1-1EDC-403C-A2A7-60EBAFD57CDC}.Release|x86.ActiveCfg = Release|x86
 		{F86B78C1-1EDC-403C-A2A7-60EBAFD57CDC}.Release|x86.Build.0 = Release|x86
 		{F86B78C1-1EDC-403C-A2A7-60EBAFD57CDC}.Release|x86.Deploy.0 = Release|x86
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Debug|arm64.Build.0 = Debug|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Debug|x64.Build.0 = Debug|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Debug|x86.Build.0 = Debug|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|arm64.ActiveCfg = Release|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|arm64.Build.0 = Release|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|x64.ActiveCfg = Release|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|x64.Build.0 = Release|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|x86.ActiveCfg = Release|Any CPU
+		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

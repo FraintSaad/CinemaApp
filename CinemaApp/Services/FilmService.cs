@@ -12,7 +12,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace CinemaApp.Shared.Services
+namespace CinemaApp.Services
 {
     public class FilmService
     {
@@ -29,26 +29,27 @@ namespace CinemaApp.Shared.Services
             _httpClient.DefaultRequestHeaders.Add("X-API-KEY", _apiKey);
         }
 
-        public async Task<List<FilmModel>> GetFilmsAsync()
+        public async Task<List<FilmModel>> GetFilmsAsync(int offset)
         {
             try
             {
-                var url = "https://kinopoiskapiunofficial.tech/api/v2.2/films?order=RATING&type=ALL&ratingFrom=9&ratingTo=10&yearFrom=1000&yearTo=3000&page=1";
+                var url = $"films?order=RATING&type=ALL&ratingFrom=9&ratingTo=10&yearFrom=1000&yearTo=3000&page={offset + 1}";
                 var response = await _httpClient.GetAsync(url);
                 if (!response.IsSuccessStatusCode)
                 {
-                    return null;
+                    throw new Exception("Something went drastically wrong");
                 }
 
                 string json = await response.Content.ReadAsStringAsync();
                 Debug.WriteLine(json);
+
                 var filmResponse = JsonConvert.DeserializeObject<FilmResponse>(json);
                 return filmResponse?.Items;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Ошибка десериализации: {ex.Message} ");
-                return null;
+                throw;
             }
         }
     }
