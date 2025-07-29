@@ -41,7 +41,7 @@
 
         <ScrollViewer Grid.Column="1" 
                      Background="#1E1E1E"
-                     Padding="15">
+                     Padding="15" ViewChanged="ScrollViewer_ViewChanged">
             <ListView x:Name="MyListView" 
                      ItemsSource="{x:Bind _filmsViewModel.Films, Mode=OneWay}" 
                      Background="Transparent"
@@ -128,7 +128,6 @@
                                 </StackPanel>
 
                                 <Button x:Name="addToFavoritesBtn" Click="addToFavoritesBtn_Click" Grid.Row="3">
-
                                     <StackPanel Orientation="Horizontal" Spacing="10">
                                         <SymbolIcon Symbol="Favorite" Foreground="White"/>
                                         <TextBlock Text="Добавить в избранное" VerticalAlignment="Center" Foreground="White"/>
