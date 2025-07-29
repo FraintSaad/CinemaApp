@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CinemaApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:data="using:CinemaApp.Models" xmlns:viewmodels="using:CinemaApp.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:data="using:CinemaApp.Models" 
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -43,7 +43,7 @@
                      Background="#1E1E1E"
                      Padding="15" ViewChanged="ScrollViewer_ViewChanged">
             <ListView x:Name="MyListView" 
-                     ItemsSource="{x:Bind _filmsViewModel.Films, Mode=OneWay}" 
+                     ItemsSource="{x:Bind Films, Mode=OneWay}" 
                      Background="Transparent"
                      SelectionMode="None"
                      IsItemClickEnabled="True" HorizontalAlignment="Center">

@@ -45,7 +45,7 @@
             <ScrollViewer Grid.Column="1" 
                Background="#1E1E1E"
                Padding="15">
-                <ListView ItemsSource="{x:Bind _favoritesViewModel.FavoriteFilms, Mode=OneWay}"  SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center">
+                <ListView ItemsSource="{x:Bind FavoriteFilms, Mode=OneWay}"  SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center">
 
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>

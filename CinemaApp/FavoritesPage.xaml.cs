@@ -1,5 +1,4 @@
 ﻿using CinemaApp.Models;
-using CinemaApp.ViewModels;
 using Data.Context;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -25,15 +24,14 @@ namespace CinemaApp
 {
     public sealed partial class FavoritesPage : Page
     {
-        private readonly FavoritesViewModel _favoritesViewModel;
+        public ObservableCollection<FilmEntity> FavoriteFilms { get; set; } = new ObservableCollection<FilmEntity>();
         private readonly FilmsDbContext _dbContext;
         public FilmsDbContext dbContext { get; set; }
         public FavoritesPage()
         {
             this.InitializeComponent();
-            _favoritesViewModel = new FavoritesViewModel();
             _dbContext = new FilmsDbContext();
-            Loaded += async (s, e) => await _favoritesViewModel.LoadFavoritesAsync();
+            Loaded += async (s, e) => await LoadFavoritesAsync();
         }
 
         private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
@@ -54,8 +52,20 @@ namespace CinemaApp
             var film = (((Button)sender).DataContext as FilmEntity)!;
             _dbContext.FavoriteFilms.Remove(film);
             _dbContext.SaveChanges();
-            _favoritesViewModel?.LoadFavoritesAsync();
+            LoadFavoritesAsync();
 
+        }
+
+        public async Task LoadFavoritesAsync()
+        {
+            var db = new FilmsDbContext();
+            var films = await db.FavoriteFilms.ToListAsync();
+
+            FavoriteFilms.Clear();
+            foreach (var film in films)
+            {
+                FavoriteFilms.Add(film);
+            }
         }
     }
 }

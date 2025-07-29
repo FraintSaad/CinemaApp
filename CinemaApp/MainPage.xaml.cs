@@ -1,34 +1,34 @@
 ﻿using CinemaApp.Models;
 using CinemaApp.Services;
-using CinemaApp.ViewModels;
+using Data.Context;
+using Data.Entities;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Data.Context;
-using Data.Entities;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CinemaApp
 {
     public sealed partial class MainPage : Page
     {
-        private readonly FilmService _filmService;
-        private readonly FilmsViewModel _filmsViewModel;
         private readonly FilmsDbContext _dbContext;
         private bool _isLoading = false;
-
+        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly FilmService _filmService;
+        public ObservableCollection<FilmModel> Films { get; set; } = new ObservableCollection<FilmModel>();
         public MainPage()
         {
             this.InitializeComponent();
-            DataContext = _filmsViewModel;
+            DataContext = this;
             _filmService = new FilmService();
-            _filmsViewModel = new FilmsViewModel();
             _dbContext = new FilmsDbContext();
         }
 
@@ -36,7 +36,7 @@ namespace CinemaApp
         {
             base.OnNavigatedTo(e);
 
-            await _filmsViewModel.LoadFilmsAsync(0);
+            await LoadFilmsAsync(0);
 
         }
 
@@ -57,7 +57,7 @@ namespace CinemaApp
                 {
                     page++;
                     _isLoading = true;
-                    await _filmsViewModel.LoadFilmsAsync(page);
+                    await LoadFilmsAsync(page);
                 }
             }
             catch (Exception ex)
@@ -111,6 +111,20 @@ namespace CinemaApp
             }
             _dbContext.FavoriteFilms.Add(filmEntity);
             _dbContext.SaveChanges();
+        }
+
+        public async Task LoadFilmsAsync(int offset)
+        {
+            var films = await _filmService.GetFilmsAsync(offset);
+            if (films == null)
+            {
+                return;
+            }
+
+            foreach (var film in films)
+            {
+                Films.Add(film);
+            }
         }
     }
 }
