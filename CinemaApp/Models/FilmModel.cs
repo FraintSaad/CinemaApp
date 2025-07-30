@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 
 namespace CinemaApp.Models
 {
-    public class FilmModel
+    public class FilmModel : INotifyPropertyChanged
     {
         public int KinopoiskId { get; set; }
         public string? ImdbId { get; set; }
@@ -17,6 +20,28 @@ namespace CinemaApp.Models
         public string? Type { get; set; }
         public string? PosterUrl { get; set; }
         public string? PosterUrlPreview { get; set; }
+        [JsonIgnore]
+        private bool _isInFavorites;
+        [JsonIgnore]
+        public bool IsInFavorites
+        {
+            get => _isInFavorites;
+            set
+            {
+                if (_isInFavorites != value)
+                {
+                    _isInFavorites = value;
+                    OnPropertyChanged(nameof(IsInFavorites));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
 
     }
