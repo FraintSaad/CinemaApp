@@ -65,9 +65,8 @@ namespace CinemaApp
             {
                 if (scrollViewer.VerticalOffset >= scrollThreshhold)
                 {
-                    page++;
                     _isLoading = true;
-                    await LoadFilmsAsync(page);
+                    await LoadFilmsAsync(page++);
                 }
             }
             catch (Exception ex)
@@ -178,6 +177,26 @@ namespace CinemaApp
                         film.IsInFavorites = true;
                     }
                 }
+            }
+        }
+
+        private void SortByNameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var sortedFilms = Films.OrderBy(f => string.IsNullOrEmpty(f.NameRu) ? f.NameOriginal : f.NameRu).ToList();
+            Films.Clear();
+            foreach (var film in sortedFilms)
+            {
+                Films.Add(film);
+            }
+        }
+
+        private void SortByRatingBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var sortedFilms = Films.OrderByDescending(f => f.RatingKinopoisk).ToList();
+            Films.Clear();
+            foreach (var film in sortedFilms)
+            {
+                Films.Add(film);
             }
         }
     }
