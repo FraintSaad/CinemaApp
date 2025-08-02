@@ -32,6 +32,7 @@ namespace CinemaApp
 
         private bool _isLoading = false;
         int page = 1;
+        
 
         public MainPage()
         {
@@ -121,7 +122,7 @@ namespace CinemaApp
                 _dbContext.SaveChanges();
             }
             film.IsInFavorites = true;
-           
+
         }
         private void DeleteFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -198,6 +199,15 @@ namespace CinemaApp
             {
                 Films.Add(film);
             }
+        }
+
+        private void MyListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (e.ClickedItem is FilmModel film)
+            {
+                Frame.Navigate(typeof(FilmPage), film);
+            }
+
         }
     }
 }

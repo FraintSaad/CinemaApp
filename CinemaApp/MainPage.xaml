@@ -9,6 +9,12 @@
     <Page.Resources>
         <local:VisibleConverter x:Key="VisibleConverter"/>
     </Page.Resources>
+    <Page.TopAppBar>
+        <CommandBar Background="#252526" HorizontalAlignment="Left" DefaultLabelPosition="Right">
+            <AppBarButton Icon="Sort" Label="По имени" Click="SortByNameBtn_Click"/>
+            <AppBarButton Icon="Filter"  Label="По рейтингу" Click="SortByRatingBtn_Click"/>
+        </CommandBar>
+    </Page.TopAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -19,15 +25,15 @@
                Width="200" 
                Background="#2D2D30"
                Padding="15">
-            
-                    <Button x:Name="MainPageBtn" HorizontalAlignment="Stretch" Click="MainPageBtn_Click">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <SymbolIcon Symbol="Home" Foreground="White"/>
-                            <TextBlock Text="Главная" 
+
+            <Button x:Name="MainPageBtn" HorizontalAlignment="Stretch" Click="MainPageBtn_Click">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <SymbolIcon Symbol="Home" Foreground="White"/>
+                    <TextBlock Text="Главная" 
                            Foreground="White"
                            VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
+                </StackPanel>
+            </Button>
 
             <Button x:Name="FavoritesBtn" Margin="0,15,0,0" HorizontalAlignment="Stretch" Click="FavoritesBtn_Click">
                 <StackPanel Orientation="Horizontal" Spacing="10">
@@ -36,73 +42,50 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-
-        <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Horizontal" Grid.Row="0"  Background="#1E1E1E">
-                    <Button x:Name="SortByNameBtn" Margin="10,15,0,0" HorizontalAlignment="Stretch" Click="SortByNameBtn_Click">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <SymbolIcon Symbol="Sort" Foreground="White"/>
-                            <TextBlock Text="По имени" Foreground="White" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="SortByRatingBtn" Margin="10,10,0,0" HorizontalAlignment="Stretch" Click="SortByRatingBtn_Click">
-                        <StackPanel Orientation="Horizontal" Spacing="10">
-                            <SymbolIcon Symbol="Sort" Foreground="White"/>
-                            <TextBlock Text="По рейтингу" Foreground="White" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-        <ScrollViewer  
-                     Background="#1E1E1E"
-                     Padding="15" ViewChanged="ScrollViewer_ViewChanged" Grid.Row="1">
-                <ListView x:Name="MyListView" 
+        <ScrollViewer Background="#1E1E1E" Padding="15" ViewChanged="ScrollViewer_ViewChanged" Grid.Column="1">
+            <ListView x:Name="MyListView" 
                      ItemsSource="{x:Bind Films, Mode=OneWay}" 
                      Background="Transparent"
                      SelectionMode="None"
-                     IsItemClickEnabled="True" HorizontalAlignment="Center">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal"
+                     IsItemClickEnabled="True" HorizontalAlignment="Center" ItemClick="MyListView_ItemClick">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"
                                      MaximumRowsOrColumns="2"
                                      HorizontalAlignment="Stretch"
                                      ItemWidth="500"
                                      ItemHeight="320"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="data:FilmModel">
-                            <Grid Width="600" 
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:FilmModel">
+                        <Grid Width="600" 
                              Height="300" 
                              Margin="10"
                              Background="#252526"
                              CornerRadius="8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="180"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                                <Image Source="{x:Bind PosterUrlPreview}" 
+                            <Image Source="{x:Bind PosterUrlPreview}" 
                                    Grid.Column="0"
                                    Stretch="Fill" />
 
-                                <Grid Grid.Column="1" 
+                            <Grid Grid.Column="1" 
                                  Background="#333333"
                                  CornerRadius="0,8,8,0"
                                  Padding="15">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                                    <TextBlock Text="{x:Bind NameRu}" 
+                                <TextBlock Text="{x:Bind NameRu}" 
                                           Grid.Row="0"
                                           Foreground="White" 
                                           FontSize="18"
@@ -112,7 +95,7 @@
                                           LineHeight="24"
                                           LineStackingStrategy="BlockLineHeight"/>
 
-                                    <TextBlock Text="{x:Bind NameOriginal}" 
+                                <TextBlock Text="{x:Bind NameOriginal}" 
                                           Grid.Row="1"
                                           Foreground="#A0A0A0" 
                                           FontSize="14"
@@ -120,47 +103,46 @@
                                           TextWrapping="Wrap"
                                           MaxLines="2"/>
 
-                                    <StackPanel Grid.Row="2"
+                                <StackPanel Grid.Row="2"
                                            VerticalAlignment="Center"
                                            Margin="0,15,0,0">
-                                        <StackPanel Orientation="Horizontal" Spacing="8">
-                                            <FontIcon Glyph="&#xE787;" Foreground="#A0A0A0" FontSize="12"/>
-                                            <TextBlock Text="{x:Bind Year}" 
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <FontIcon Glyph="&#xE787;" Foreground="#A0A0A0" FontSize="12"/>
+                                        <TextBlock Text="{x:Bind Year}" 
                                                   Foreground="#A0A0A0" 
                                                   FontSize="14"/>
-                                        </StackPanel>
-
-                                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                                            <FontIcon Glyph="&#xE734;" Foreground="Gold" FontSize="12"/>
-                                            <TextBlock Text="{x:Bind RatingKinopoisk}" Foreground="Gold" FontSize="14"/>
-                                        </StackPanel>
-
-                                        <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
-                                            <FontIcon Glyph="&#xE12B;" Foreground="DodgerBlue" FontSize="12"/>
-                                            <TextBlock Text="{x:Bind RatingImdb}" Foreground="DodgerBlue" FontSize="14"/>
-                                        </StackPanel>
                                     </StackPanel>
 
-                                    <Button x:Name="addToFavoritesBtn" Click="addToFavoritesBtn_Click" Grid.Row="3" Visibility="{x:Bind IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}">
+                                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                                        <FontIcon Glyph="&#xE734;" Foreground="Gold" FontSize="12"/>
+                                        <TextBlock Text="{x:Bind RatingKinopoisk}" Foreground="Gold" FontSize="14"/>
+                                    </StackPanel>
 
-                                        <StackPanel Orientation="Horizontal" Spacing="10">
-                                            <SymbolIcon Symbol="Favorite" Foreground="White"/>
-                                            <TextBlock Text="Добавить в избранное" VerticalAlignment="Center" Foreground="White"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button x:Name="DeleteFromFavoritesBtn" Click="DeleteFromFavoritesBtn_Click" Grid.Row="3" Visibility="{x:Bind IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}}">
-                                        <StackPanel Orientation="Horizontal" Spacing="10">
-                                            <SymbolIcon Symbol="Delete" Foreground="Red"/>
-                                            <TextBlock Text="Удалить из избранного" VerticalAlignment="Center" Foreground="Red"/>
-                                        </StackPanel>
-                                    </Button>
+                                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+                                        <FontIcon Glyph="&#xE12B;" Foreground="DodgerBlue" FontSize="12"/>
+                                        <TextBlock Text="{x:Bind RatingImdb}" Foreground="DodgerBlue" FontSize="14"/>
+                                    </StackPanel>
+                                </StackPanel>
 
-                                </Grid>
+                                <Button x:Name="addToFavoritesBtn" Click="addToFavoritesBtn_Click" Grid.Row="3" Visibility="{x:Bind IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <SymbolIcon Symbol="Favorite" Foreground="White"/>
+                                        <TextBlock Text="Добавить в избранное" VerticalAlignment="Center" Foreground="White"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button x:Name="DeleteFromFavoritesBtn" Click="DeleteFromFavoritesBtn_Click" Grid.Row="3" Visibility="{x:Bind IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}}">
+                                    <StackPanel Orientation="Horizontal" Spacing="10">
+                                        <SymbolIcon Symbol="Delete" Foreground="Red"/>
+                                        <TextBlock Text="Удалить из избранного" VerticalAlignment="Center" Foreground="Red"/>
+                                    </StackPanel>
+                                </Button>
+
                             </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </ScrollViewer>
-            </Grid>
     </Grid>
+
 </Page>

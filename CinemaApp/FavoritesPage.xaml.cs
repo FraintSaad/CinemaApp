@@ -67,5 +67,13 @@ namespace CinemaApp
                 FavoriteFilms.Add(film);
             }
         }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (e.ClickedItem is FilmEntity film)
+            {
+                Frame.Navigate(typeof(FilmPage), film);
+            }
+        }
     }
 }
