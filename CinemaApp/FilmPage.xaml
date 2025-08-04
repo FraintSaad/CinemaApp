@@ -4,9 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CinemaApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:CinemaApp.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:CinemaApp.Models" xmlns:local1="using:CinemaApp.Converters"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <local1:VisibleConverter x:Key="VisibleConverter"/>
+    </Page.Resources>
 
     <Page.TopAppBar>
         <CommandBar Background="#252526" Height="auto" DefaultLabelPosition="Right">
@@ -24,7 +28,6 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Постер фильма -->
                 <Image Source="{x:Bind CurrentFilm.PosterUrlPreview, Mode=OneWay}" 
                    Stretch="UniformToFill"
                    Height="600"
@@ -76,6 +79,13 @@
                         </Grid>
 
                         <Rectangle Fill="#FFD700" Height="1" Margin="0,15,0,15" Opacity="0.3"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0" Spacing="12">
+                        <Button x:Name="AddToFavoritesBtn" Content="Добавить в избранное" Click="addToFavoritesBtn_Click"
+                                Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}" Background="Transparent" BorderBrush="#FFD700" Foreground="White" Padding="12,6"/>
+                        <Button x:Name="DeleteFromFavoritesBtn" Content="Удалить из избранного" Click="DeleteFromFavoritesBtn_Click" 
+                                Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}}"  Background="Transparent" BorderBrush="Red" Foreground="White" Padding="12,6"/>
                     </StackPanel>
 
                 </StackPanel>
