@@ -15,6 +15,7 @@ using System.Xml;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using static System.Net.Mime.MediaTypeNames;
@@ -31,8 +32,11 @@ namespace CinemaApp
         public ObservableCollection<FilmModel> Films { get; set; } = new ObservableCollection<FilmModel>();
 
         private bool _isLoading = false;
+        private bool _isNameDescending = true;
+        private bool _isYearDescending = true;
+        private bool _isRatingDescending = true;
         int page = 1;
-        
+
 
         public MainPage()
         {
@@ -183,21 +187,74 @@ namespace CinemaApp
 
         private void SortByNameBtn_Click(object sender, RoutedEventArgs e)
         {
-            var sortedFilms = Films.OrderBy(f => string.IsNullOrEmpty(f.NameRu) ? f.NameOriginal : f.NameRu).ToList();
+            if (Films == null || Films.Count == 0) return;
+
+            List<FilmModel> sortedFilms;
+            if (_isNameDescending)
+            {
+                sortedFilms = Films.OrderByDescending(f => string.IsNullOrEmpty(f.NameRu) ? f.NameOriginal : f.NameRu).ToList();
+            }
+            else
+            {
+                sortedFilms = Films.OrderBy(f => string.IsNullOrEmpty(f.NameRu) ? f.NameOriginal : f.NameRu).ToList();
+            }
+            _isNameDescending = !_isNameDescending;
             Films.Clear();
             foreach (var film in sortedFilms)
             {
-                Films.Add(film);
+                if (!Films.Contains(film))
+                {
+                    Films.Add(film);
+                }
             }
         }
 
         private void SortByRatingBtn_Click(object sender, RoutedEventArgs e)
         {
-            var sortedFilms = Films.OrderByDescending(f => f.RatingKinopoisk).ToList();
+            if (Films == null || Films.Count == 0) return;
+
+            List<FilmModel> sortedFilms;
+            if (_isRatingDescending)
+            {
+           
+                sortedFilms = Films.OrderByDescending(f => f.RatingKinopoisk).ToList();
+            }
+            else
+            {
+                sortedFilms = Films.OrderBy(f => f.RatingKinopoisk).ToList();
+            }
+            _isRatingDescending = !_isRatingDescending;
             Films.Clear();
             foreach (var film in sortedFilms)
             {
-                Films.Add(film);
+                if (!Films.Contains(film))
+                {
+                    Films.Add(film);
+                }
+            }
+        }
+        private void SortByYearBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (Films == null || Films.Count == 0) return;
+
+            List<FilmModel> sortedFilms;
+            if (_isYearDescending)
+            {
+
+                sortedFilms = Films.OrderByDescending(f => f.Year).ToList();
+            }
+            else
+            {
+                sortedFilms = Films.OrderBy(f => f.Year).ToList();
+            }
+            _isYearDescending = !_isYearDescending;
+            Films.Clear();
+            foreach (var film in sortedFilms)
+            {
+                if (!Films.Contains(film))
+                {
+                    Films.Add(film);
+                }
             }
         }
 
@@ -208,6 +265,16 @@ namespace CinemaApp
                 Frame.Navigate(typeof(FilmPage), film);
             }
 
+        }
+
+        private void CursorEntered_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
+        }
+
+        private void CursorExited_PointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
         }
     }
 }

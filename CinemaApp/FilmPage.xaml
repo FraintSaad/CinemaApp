@@ -10,84 +10,94 @@
 
     <Page.Resources>
         <local1:VisibleConverter x:Key="VisibleConverter"/>
+        <SolidColorBrush x:Key="DarkBackgroundBrush" Color="#252526"/>
+        <SolidColorBrush x:Key="GoldAccentBrush" Color="#FFD700"/>
+        <SolidColorBrush x:Key="LightTextBrush" Color="#A0A0A0"/>
     </Page.Resources>
 
     <Page.TopAppBar>
         <CommandBar Background="#252526" Height="auto" DefaultLabelPosition="Right">
             <CommandBar.Content>
-                <AppBarButton Icon="Back"
-                            Click="BackButton_Click"/>
+                <AppBarButton Icon="Back" Click="BackButton_Click"/>
             </CommandBar.Content>
         </CommandBar>
     </Page.TopAppBar>
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <ScrollViewer>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="{x:Bind CurrentFilm.PosterUrlPreview, Mode=OneWay}" Stretch="UniformToFill" Opacity="0.1"/>
+        </Grid.Background>
+        <ScrollViewer Padding="0" VerticalScrollBarVisibility="Auto">
             <Grid Margin="20" x:Name="FilmGrid">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" MinWidth="300"/>
+                    <ColumnDefinition Width="*" MinWidth="400"/>
                 </Grid.ColumnDefinitions>
+                <Image Source="{x:Bind CurrentFilm.PosterUrlPreview, Mode=OneWay}" Stretch="UniformToFill" Height="600" Margin="0,0,20,0" Grid.Column="0" VerticalAlignment="Top"/>
 
-                <Image Source="{x:Bind CurrentFilm.PosterUrlPreview, Mode=OneWay}" 
-                   Stretch="UniformToFill"
-                   Height="600"
-                   Margin="0,0,20,0" Grid.Column="0" VerticalAlignment="Top"/>
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="{x:Bind CurrentFilm.NameRu}" Foreground="White"  FontSize="36" FontWeight="SemiBold" LineHeight="32" TextWrapping="Wrap"/>
-                    <TextBlock Text="{x:Bind CurrentFilm.NameOriginal}"  Foreground="#A0A0A0" FontSize="30" FontStyle="Italic" Margin="0,5,0,15"/>
-
-                    <Rectangle Fill="#FFD700" Height="1" Margin="0,15,0,15" Opacity="0.3"/>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,15,0,0" Spacing="20">
-                        <TextBlock Text="Рейтинги:" Margin="0, 5, 0, 0"/>
-                        <StackPanel Orientation="Horizontal" Spacing="5">
-                            <FontIcon Glyph="" Foreground="Gold" FontSize="16"/>
-                            <TextBlock Text="Кинопоиск: " Foreground="Gold" Margin="0, 5, 0, 0"/>
-                            <TextBlock Text="{x:Bind CurrentFilm.RatingKinopoisk, Mode=OneWay}" Foreground="Gold" FontSize="16" Margin="0, 2, 0, 0"/>
-                        </StackPanel>
-
-                        <Rectangle Fill="#FFD700" Height="1" Margin="0,15,0,15" Opacity="0.3"/>
-
-                        <StackPanel Orientation="Horizontal" Spacing="5">
-                            <FontIcon Glyph="" Foreground="DodgerBlue" FontSize="16"/>
-                            <TextBlock Text="iMDB: " Foreground="DodgerBlue" Margin="0, 5, 0, 0"/>
-                            <TextBlock Text="{x:Bind CurrentFilm.RatingImdb, Mode=OneWay}" Foreground="DodgerBlue" FontSize="16" Margin="0, 2, 0, 0"/>
-                        </StackPanel>
+                <StackPanel Grid.Column="1" Margin="0,20,0,0">
+                    <StackPanel>
+                        <TextBlock Text="{x:Bind CurrentFilm.NameRu}" Foreground="White" FontSize="36"  FontWeight="SemiBold" LineHeight="32" TextWrapping="Wrap"/>
+                        <TextBlock Text="{x:Bind CurrentFilm.NameOriginal}" Foreground="{StaticResource LightTextBrush}" FontSize="30" FontStyle="Italic" Margin="0,5,0,15"/>
                     </StackPanel>
-                    <Rectangle Fill="#FFD700" Height="1" Margin="0,15,0,15" Opacity="0.3"/>
+
+                    <Border Height="1" Margin="0,15,0,15" Background="{StaticResource GoldAccentBrush}" Opacity="0.3"/>
+
+                    <Grid Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Spacing="8" Grid.Column="0">
+                            <FontIcon Glyph="" Foreground="{StaticResource GoldAccentBrush}" FontSize="16"/>
+                            <TextBlock Text="Кинопоиск:" Foreground="{StaticResource GoldAccentBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Bind CurrentFilm.RatingKinopoisk, Mode=OneWay}" Foreground="{StaticResource GoldAccentBrush}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Spacing="8" Grid.Column="1" Margin="30,0,0,0">
+                            <FontIcon Glyph="" Foreground="DodgerBlue" FontSize="16"/>
+                            <TextBlock Text="IMDb:" Foreground="DodgerBlue" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Bind CurrentFilm.RatingImdb, Mode=OneWay}" Foreground="DodgerBlue" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Border Height="1" Margin="0,15,0,15" Background="{StaticResource GoldAccentBrush}" Opacity="0.3"/>
 
                     <StackPanel Margin="0,20,0,0" Spacing="10">
-                        <TextBlock Text="О фильме" Foreground="#FFD700" FontSize="18" FontWeight="SemiBold"/>
+                        <TextBlock Text="О фильме" Foreground="{StaticResource GoldAccentBrush}" FontSize="24" FontWeight="SemiBold"/>
 
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Год:" Foreground="#A0A0A0" Grid.Column="0"/>
-                            <TextBlock Text="{x:Bind CurrentFilm.Year}" Foreground="White" Grid.Column="1"/>
-
-                            <TextBlock Text="Страны:" Foreground="#A0A0A0" Grid.Column="0" Margin="0,25,0,0"/>
-                            <TextBlock Text="{x:Bind GetCountriesString(CurrentFilm.Countries)}" 
-                  Foreground="White" Grid.Column="1" Margin="0,25,0,0" TextWrapping="Wrap"/>
-
-                            <TextBlock Text="Жанры:" Foreground="#A0A0A0" Grid.Column="0" Margin="0,50,0,0"/>
-                            <TextBlock Text="{x:Bind GetGenresString(CurrentFilm.Genres)}" 
-                  Foreground="White" Grid.Column="1" Margin="0,50,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="Год:" Foreground="{StaticResource LightTextBrush}" Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Text="{x:Bind CurrentFilm.Year}" Foreground="White" Grid.Row="0" Grid.Column="1"/>
+                            <TextBlock Text="Страны:" Foreground="{StaticResource LightTextBrush}" Grid.Row="1" Grid.Column="0" Margin="0,15,0,0"/>
+                            <TextBlock Text="{x:Bind GetCountriesString(CurrentFilm.Countries)}" Foreground="White" Grid.Row="1" Grid.Column="1" Margin="0,15,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="Жанры:" Foreground="{StaticResource LightTextBrush}" Grid.Row="2" Grid.Column="0" Margin="0,15,0,0"/>
+                            <TextBlock Text="{x:Bind GetGenresString(CurrentFilm.Genres)}" Foreground="White" Grid.Row="2" Grid.Column="1" Margin="0,15,0,0" TextWrapping="Wrap"/>
                         </Grid>
-
-                        <Rectangle Fill="#FFD700" Height="1" Margin="0,15,0,15" Opacity="0.3"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0" Spacing="12">
-                        <Button x:Name="AddToFavoritesBtn" Content="Добавить в избранное" Click="addToFavoritesBtn_Click"
-                                Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}" Background="Transparent" BorderBrush="#FFD700" Foreground="White" Padding="12,6"/>
-                        <Button x:Name="DeleteFromFavoritesBtn" Content="Удалить из избранного" Click="DeleteFromFavoritesBtn_Click" 
-                                Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}}"  Background="Transparent" BorderBrush="Red" Foreground="White" Padding="12,6"/>
-                    </StackPanel>
+                    <Border Height="1" Margin="0,25,0,25" Background="{StaticResource GoldAccentBrush}" Opacity="0.3"/>
 
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0" Spacing="20">
+                        <Button x:Name="AddToFavoritesBtn" Content="Добавить в избранное" Click="addToFavoritesBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                               Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}" 
+                               Background="Transparent" BorderBrush="{StaticResource GoldAccentBrush}" Foreground="White" Padding="24,12" MinWidth="200" CornerRadius="4" FontSize="16"/>
+
+                        <Button x:Name="DeleteFromFavoritesBtn" Content="Удалить из избранного" Click="DeleteFromFavoritesBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                               Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}}"  
+                               Background="Transparent" BorderBrush="Red" Foreground="White" Padding="24,12" MinWidth="200" CornerRadius="4" FontSize="16"/>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

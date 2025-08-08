@@ -20,7 +20,7 @@
                Width="200" 
                Background="#2D2D30"
                Padding="15">
-                <Button x:Name="MainPageBtn" 
+                <Button x:Name="MainPageBtn"  PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
                 HorizontalAlignment="Stretch" Click="MainPageBtn_Click">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <SymbolIcon Symbol="Home" Foreground="White"/>
@@ -30,7 +30,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="FavoritesBtn" 
+                <Button x:Name="FavoritesBtn"  PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
                 Margin="0,15,0,0"
                 HorizontalAlignment="Stretch" Click="FavoritesBtn_Click">
                     <StackPanel Orientation="Horizontal" Spacing="10">
@@ -59,7 +59,7 @@
 
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="models:FilmEntity">
-                            <Grid Width="600"  Height="300" Margin="10" Background="#252526" CornerRadius="8">
+                            <Grid Width="600"  Height="300" Margin="10" Background="#252526" CornerRadius="8"  PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="180"/>
                                     <ColumnDefinition Width="*"/>
