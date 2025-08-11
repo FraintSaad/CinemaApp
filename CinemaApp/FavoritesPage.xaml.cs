@@ -34,28 +34,6 @@ namespace CinemaApp
             Loaded += async (s, e) => await LoadFavoritesAsync();
         }
 
-        private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(FavoritesPage));
-
-        }
-
-        private void MainPageBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(MainPage));
-
-        }
-
-        private void RemoveFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
-        {
-           
-            var film = (((Button)sender).DataContext as FilmEntity)!;
-            _dbContext.FavoriteFilms.Remove(film);
-            _dbContext.SaveChanges();
-            LoadFavoritesAsync();
-
-        }
-
         public async Task LoadFavoritesAsync()
         {
             var db = new FilmsDbContext();
@@ -67,6 +45,32 @@ namespace CinemaApp
                 FavoriteFilms.Add(film);
             }
         }
+
+        private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(FavoritesPage));
+
+        }
+
+        private void MainPageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private void RemoveFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
+        {
+           
+            var film = (((Button)sender).DataContext as FilmEntity)!;
+            RemoveFromFavorites(film);
+        }
+
+        private void RemoveFromFavorites(FilmEntity film)
+        {
+            _dbContext.FavoriteFilms.Remove(film);
+            _dbContext.SaveChanges();
+            LoadFavoritesAsync();
+        }
+
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {

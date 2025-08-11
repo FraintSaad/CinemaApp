@@ -36,7 +36,6 @@ namespace CinemaApp
             if (e.Parameter is FilmModel film)
             {
                 CurrentFilm = film;
-                CheckIfFavorite();
             }
             else if (e.Parameter is FilmEntity entity)
             {
@@ -60,12 +59,12 @@ namespace CinemaApp
             }
         }
 
-        public string GetCountriesString(List<Country> countries)
+        private string GetCountriesString(List<Country> countries)
         {
             return countries != null ? string.Join(", ", countries.Select(c => c.Name)) : string.Empty;
         }
 
-        public string GetGenresString(List<Genre> genres)
+        private string GetGenresString(List<Genre> genres)
         {
             return genres != null ? string.Join(", ", genres.Select(c => c.Name)) : string.Empty;
         }
@@ -78,7 +77,12 @@ namespace CinemaApp
             }
         }
 
-        private void addToFavoritesBtn_Click(object sender, RoutedEventArgs e)
+        private void AddToFavoritesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddToFavorites();
+        }
+
+        private void AddToFavorites()
         {
             if (CurrentFilm == null) return;
 
@@ -106,6 +110,11 @@ namespace CinemaApp
 
         private void DeleteFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
+            DeleteFromFavorites();
+        }
+
+        private void DeleteFromFavorites()
+        {
             if (CurrentFilm == null) return;
 
             var filmEntity = _dbContext.FavoriteFilms
@@ -118,14 +127,6 @@ namespace CinemaApp
 
                 CurrentFilm.IsInFavorites = false;
             }
-        }
-
-        private void CheckIfFavorite()
-        {
-            if (CurrentFilm == null) return;
-
-            CurrentFilm.IsInFavorites = _dbContext.FavoriteFilms
-                .Any(f => f.KinopoiskId == CurrentFilm.KinopoiskId);
         }
 
         private void CursorEntered_PointerEntered(object sender, PointerRoutedEventArgs e)

@@ -2,8 +2,6 @@
 using CinemaApp.Services;
 using Data.Context;
 using Data.Entities;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,14 +9,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CinemaApp
 {
@@ -51,7 +45,6 @@ namespace CinemaApp
             base.OnNavigatedTo(e);
 
             await LoadFilmsAsync(0);
-            CheckFavoritesStatus();
 
 
         }
@@ -81,7 +74,6 @@ namespace CinemaApp
             finally
             {
                 _isLoading = false;
-                CheckFavoritesStatus();
             }
         }
 
@@ -100,6 +92,17 @@ namespace CinemaApp
 
             // Получить фильм на котором нажата кнопка
             var film = (((Button)sender).DataContext as FilmModel)!;
+            addToFavorites(film);
+
+        }
+
+        private void addToFavorites(FilmModel film)
+        {
+            if (film.IsInFavorites)
+            {
+                return;
+            }
+
             // Создать FilmEntity и заполнить его данными из FilmModel
 
             var filmEntity = new FilmEntity
@@ -117,41 +120,33 @@ namespace CinemaApp
                 Type = film.Type ?? string.Empty,
             };
 
-            CheckFavoritesStatus();
 
-            if (film.IsInFavorites == false)
-            {
-                // Добавить FilmEntity в базу данных
-                _dbContext.FavoriteFilms.Add(filmEntity);
-                _dbContext.SaveChanges();
-            }
+
+            // Добавить FilmEntity в базу данных
+            _dbContext.FavoriteFilms.Add(filmEntity);
+            _dbContext.SaveChanges();
+
             film.IsInFavorites = true;
 
         }
         private void DeleteFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
             var film = (((Button)sender).DataContext as FilmModel)!;
-            var filmEntity = new FilmEntity
+            DeleteFromFavorites(film);
+           
+        }
+
+        private void DeleteFromFavorites(FilmModel film)
+        {
+            if (!film.IsInFavorites)
             {
-                KinopoiskId = film.KinopoiskId,
-                NameRu = film.NameRu ?? string.Empty,
-                NameEn = film.NameEn ?? string.Empty,
-                NameOriginal = film.NameOriginal ?? string.Empty,
-                PosterUrlPreview = film.PosterUrlPreview ?? string.Empty,
-                Countries = film.Countries != null ? string.Join(",", film.Countries.Select(c => c.Name).ToArray()) : string.Empty,
-                Genres = film.Genres != null ? string.Join(",", film.Genres) : string.Empty,
-                RatingImdb = film.RatingImdb,
-                RatingKinopoisk = film.RatingKinopoisk,
-                Year = film.Year,
-                Type = film.Type ?? string.Empty,
-            };
-            CheckFavoritesStatus();
-            if (film.IsInFavorites == true)
-            {
-                _dbContext.ChangeTracker.Clear();
-                _dbContext.FavoriteFilms.Remove(filmEntity);
-                _dbContext.SaveChanges();
+                return;
             }
+            var filmEntity = _dbContext.Find<FilmEntity>(film.KinopoiskId);
+            _dbContext.ChangeTracker.Clear();
+            _dbContext.FavoriteFilms.Remove(filmEntity);
+            _dbContext.SaveChanges();
+
             film.IsInFavorites = false;
         }
 
@@ -169,23 +164,12 @@ namespace CinemaApp
             }
         }
 
-        public void CheckFavoritesStatus()
-        {
-            foreach (var film in Films)
-            {
-                foreach (var item in _dbContext.FavoriteFilms)
-                {
-                    var local = _dbContext.Set<FilmEntity>().FirstOrDefault(item => item.KinopoiskId.Equals(film.KinopoiskId));
-
-                    if (local != null)
-                    {
-                        film.IsInFavorites = true;
-                    }
-                }
-            }
-        }
-
         private void SortByNameBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SortByName();
+        }
+        
+        private void SortByName()
         {
             if (Films == null || Films.Count == 0) return;
 
@@ -211,12 +195,17 @@ namespace CinemaApp
 
         private void SortByRatingBtn_Click(object sender, RoutedEventArgs e)
         {
+            SortByRating();
+        }
+
+        private void SortByRating()
+        {
             if (Films == null || Films.Count == 0) return;
 
             List<FilmModel> sortedFilms;
             if (_isRatingDescending)
             {
-           
+
                 sortedFilms = Films.OrderByDescending(f => f.RatingKinopoisk).ToList();
             }
             else
@@ -234,6 +223,11 @@ namespace CinemaApp
             }
         }
         private void SortByYearBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SortByYear();
+        }
+
+        private void SortByYear()
         {
             if (Films == null || Films.Count == 0) return;
 
@@ -264,7 +258,6 @@ namespace CinemaApp
             {
                 Frame.Navigate(typeof(FilmPage), film);
             }
-
         }
 
         private void CursorEntered_PointerEntered(object sender, PointerRoutedEventArgs e)

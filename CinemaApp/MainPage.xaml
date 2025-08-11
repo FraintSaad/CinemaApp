@@ -14,10 +14,10 @@
         <local:VisibleConverter x:Key="VisibleConverter"/>
     </Page.Resources>
     <Page.TopAppBar>
-        <CommandBar Background="#252526" HorizontalAlignment="Left" DefaultLabelPosition="Right">
-            <AppBarButton Icon="Sort" Label="По имени" Click="SortByNameBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
-            <AppBarButton Icon="Filter"  Label="По рейтингу" Click="SortByRatingBtn_Click"  PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
-            <AppBarButton Icon="Calendar" Label="По дате выхода" Click="SortByYearBtn_Click"  PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
+        <CommandBar Background="Black" HorizontalAlignment="Left" DefaultLabelPosition="Right">
+            <AppBarButton Icon="Sort" Label="По имени" Click="SortByNameBtn_Click" Foreground="White" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
+            <AppBarButton Icon="Filter"  Label="По рейтингу" Click="SortByRatingBtn_Click" Foreground="White" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
+            <AppBarButton Icon="Calendar" Label="По дате выхода" Click="SortByYearBtn_Click" Foreground="White" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
         </CommandBar>
     </Page.TopAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -43,7 +43,7 @@
             </Button>
         </StackPanel>
         <ScrollViewer Background="#1E1E1E" Padding="15" ViewChanged="ScrollViewer_ViewChanged" Grid.Column="1">
-            <ListView x:Name="MyListView" ItemsSource="{Binding Films, Mode=TwoWay}" Background="Transparent" SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center">
+            <ListView x:Name="MyListView" ItemsSource="{Binding Films, Mode=TwoWay}" Background="Transparent" SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center" ItemClick="MyListView_ItemClick">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="2" HorizontalAlignment="Stretch" ItemWidth="500" ItemHeight="320"/>

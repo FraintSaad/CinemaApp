@@ -1,4 +1,7 @@
 ﻿using CinemaApp.Models;
+using Data.Context;
+using Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,6 +23,9 @@ namespace CinemaApp.Services
         private readonly string _apiKey = "1aedc52c-6963-41f8-b059-0fa21cc2b42b";
 
 
+        private readonly FilmsDbContext _dbContext;
+
+
         public FilmService()
         {
             _httpClient = new HttpClient();
@@ -27,6 +33,7 @@ namespace CinemaApp.Services
 
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Add("X-API-KEY", _apiKey);
+            _dbContext = new FilmsDbContext();
         }
 
         public async Task<List<FilmModel>> GetFilmsAsync(int offset)
@@ -44,6 +51,18 @@ namespace CinemaApp.Services
                 Debug.WriteLine(json);
 
                 var filmResponse = JsonConvert.DeserializeObject<FilmResponse>(json);
+                foreach (var film in filmResponse.Items)
+                {
+                    foreach (var item in _dbContext.FavoriteFilms)
+                    {
+                        var local = _dbContext.Set<FilmEntity>().FirstOrDefault(item => item.KinopoiskId.Equals(film.KinopoiskId));
+
+                        if (local != null)
+                        {
+                            film.IsInFavorites = true;
+                        }
+                    }
+                }
                 return filmResponse?.Items;
             }
             catch (Exception ex)
