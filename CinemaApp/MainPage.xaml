@@ -3,7 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:data="using:CinemaApp.Models" xmlns:local="using:CinemaApp.Converters" xmlns:local1="using:CinemaApp.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:data="using:CinemaApp.Models" xmlns:local="using:CinemaApp.Converters" xmlns:local1="using:CinemaApp.ViewModels"
     mc:Ignorable="d">
 
     <Page.DataContext>
@@ -15,9 +16,15 @@
     </Page.Resources>
     <Page.TopAppBar>
         <CommandBar Background="Black" HorizontalAlignment="Left" DefaultLabelPosition="Right">
-            <AppBarButton Icon="Sort" Label="По имени" Click="SortByNameBtn_Click" Foreground="White" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
-            <AppBarButton Icon="Filter"  Label="По рейтингу" Click="SortByRatingBtn_Click" Foreground="White" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
-            <AppBarButton Icon="Calendar" Label="По дате выхода" Click="SortByYearBtn_Click" Foreground="White" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"/>
+            <AppBarButton x:Name="SortByName" Icon="Sort" Label="По имени"  Foreground="White"
+                          PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                          Command="{Binding DataContext.SortByNameCommand, ElementName=SortByName}" CommandParameter="{Binding}"/>
+            <AppBarButton x:Name="SortByRating" Icon="Filter"  Label="По рейтингу"  Foreground="White"
+                          PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                          Command="{Binding DataContext.SortByRatingCommand, ElementName=SortByRating}" CommandParameter="{Binding}"/>
+            <AppBarButton x:Name="SortByYear" Icon="Calendar" Label="По дате выхода"  Foreground="White"
+                          PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                          Command="{Binding DataContext.SortByYearCommand, ElementName=SortByYear}" CommandParameter="{Binding}"/>
         </CommandBar>
     </Page.TopAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -28,22 +35,26 @@
 
         <StackPanel Grid.Column="0" Width="200" Background="#2D2D30" Padding="15">
 
-            <Button x:Name="MainPageBtn" HorizontalAlignment="Stretch" Click="MainPageBtn_Click"  PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited">
+            <Button x:Name="MainPageBtn" HorizontalAlignment="Stretch"  
+                    PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                    Click="MainPageBtn_Click">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <SymbolIcon Symbol="Home" Foreground="White"/>
                     <TextBlock Text="Главная" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
 
-            <Button x:Name="FavoritesBtn" Margin="0,15,0,0" HorizontalAlignment="Stretch" Click="FavoritesBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited">
+            <Button x:Name="FavoritesBtn" Margin="0,15,0,0" HorizontalAlignment="Stretch"  
+                    PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                     Click="FavoritesBtn_Click">
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <SymbolIcon Symbol="Favorite" Foreground="White"/>
                     <TextBlock Text="Избранное" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
         </StackPanel>
-        <ScrollViewer Background="#1E1E1E" Padding="15" ViewChanged="ScrollViewer_ViewChanged" Grid.Column="1">
-            <ListView x:Name="MyListView" ItemsSource="{Binding Films, Mode=TwoWay}" Background="Transparent" SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center" ItemClick="MyListView_ItemClick">
+        <ScrollViewer Background="#1E1E1E" Padding="1" Grid.Column="1">
+            <ListView x:Name="MyListView" ItemsSource="{Binding Films, Mode=TwoWay}" Background="Transparent" SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center" >
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="2" HorizontalAlignment="Stretch" ItemWidth="500" ItemHeight="320"/>
@@ -88,14 +99,17 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <Button x:Name="AddToFavoritesBtn" Grid.Row="3" Visibility="{Binding IsInFavorites, Mode=TwoWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}"
-                                        Command="{Binding MainViewModel.AddToFavoritesCommand}" CommandParameter="{Binding}">
+                                <Button x:Name="AddToFavoritesBtn" Grid.Row="3" 
+                                        Visibility="{Binding IsInFavorites, Mode=TwoWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}"
+                                        Command="{Binding DataContext.AddToFavoritesCommand,ElementName=MyListView}" CommandParameter="{Binding}">
                                     <StackPanel Orientation="Horizontal" Spacing="10">
                                         <SymbolIcon Symbol="Favorite" Foreground="White"/>
                                         <TextBlock Text="Добавить в избранное" VerticalAlignment="Center" Foreground="White"/>
                                     </StackPanel>
                                 </Button>
-                                <Button x:Name="DeleteFromFavoritesBtn"  Grid.Row="3" Visibility="{Binding IsInFavorites, Mode=TwoWay, Converter={StaticResource VisibleConverter}}" Click="DeleteFromFavoritesBtn_Click">
+                                <Button x:Name="DeleteFromFavoritesBtn"  Grid.Row="3" 
+                                        Visibility="{Binding IsInFavorites, Mode=TwoWay, Converter={StaticResource VisibleConverter}}"
+                                        Command="{Binding DataContext.DeleteFromFavoritesCommand, ElementName=MyListView}" CommandParameter="{Binding}">
                                     <StackPanel Orientation="Horizontal" Spacing="10">
                                         <SymbolIcon Symbol="Delete" Foreground="Red"/>
                                         <TextBlock Text="Удалить из избранного" VerticalAlignment="Center" Foreground="Red"/>

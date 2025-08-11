@@ -4,9 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CinemaApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:data="using:Data.Context" xmlns:models="using:Data.Entities"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:data="using:Data.Context" xmlns:models="using:Data.Entities" xmlns:local1="using:CinemaApp.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <local1:FavoritesPageViewModel/>
+    </Page.DataContext>
 
     <Grid>
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -45,7 +49,7 @@
             <ScrollViewer Grid.Column="1" 
                Background="#1E1E1E"
                Padding="15">
-                <ListView ItemsSource="{x:Bind FavoriteFilms, Mode=OneWay}"  SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center" ItemClick="ListView_ItemClick">
+                <ListView x:Name="FavoritesListView" ItemsSource="{Binding FavoriteFilms, Mode=OneWay}"  SelectionMode="None" IsItemClickEnabled="True" HorizontalAlignment="Center" ItemClick="ListView_ItemClick">
 
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -93,7 +97,8 @@
                                             <TextBlock Text="{x:Bind RatingImdb}" Foreground="DodgerBlue"  FontSize="14"/>
                                         </StackPanel>
                                     </StackPanel>
-                                    <Button x:Name="RemoveFromFavoritesBtn"  Click="RemoveFromFavoritesBtn_Click" Margin="0,10,0,0" Grid.Row="3">
+                                    <Button x:Name="RemoveFromFavoritesBtn" Margin="0,10,0,0" Grid.Row="3"
+                                             Command="{Binding DataContext.RemoveFromFavoritesCommand, ElementName=FavoritesListView}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal" Spacing="10">
                                             <SymbolIcon Symbol="Delete" Foreground="White"/>
                                             <TextBlock Text="Удалить из избранного" VerticalAlignment="Center" Foreground="White"/>

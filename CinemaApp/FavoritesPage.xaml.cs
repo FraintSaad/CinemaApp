@@ -24,27 +24,14 @@ namespace CinemaApp
 {
     public sealed partial class FavoritesPage : Page
     {
-        public ObservableCollection<FilmEntity> FavoriteFilms { get; set; } = new ObservableCollection<FilmEntity>();
-        private readonly FilmsDbContext _dbContext;
-        public FilmsDbContext dbContext { get; set; }
+       
         public FavoritesPage()
         {
             this.InitializeComponent();
-            _dbContext = new FilmsDbContext();
-            Loaded += async (s, e) => await LoadFavoritesAsync();
+            //Loaded += async (s, e) => await LoadFavoritesAsync();
         }
 
-        public async Task LoadFavoritesAsync()
-        {
-            var db = new FilmsDbContext();
-            var films = await db.FavoriteFilms.ToListAsync();
-
-            FavoriteFilms.Clear();
-            foreach (var film in films)
-            {
-                FavoriteFilms.Add(film);
-            }
-        }
+       
 
         private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -57,19 +44,7 @@ namespace CinemaApp
             Frame.Navigate(typeof(MainPage));
         }
 
-        private void RemoveFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
-        {
-           
-            var film = (((Button)sender).DataContext as FilmEntity)!;
-            RemoveFromFavorites(film);
-        }
-
-        private void RemoveFromFavorites(FilmEntity film)
-        {
-            _dbContext.FavoriteFilms.Remove(film);
-            _dbContext.SaveChanges();
-            LoadFavoritesAsync();
-        }
+     
 
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
