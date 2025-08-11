@@ -89,8 +89,8 @@
 
                     <Border Height="1" Margin="0,25,0,25" Background="{StaticResource GoldAccentBrush}" Opacity="0.3"/>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,20,0,0" Spacing="20">
-                        <Button x:Name="AddToFavoritesBtn" Content="Добавить в избранное" Click="addToFavoritesBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <Button x:Name="AddToFavoritesBtn" Content="Добавить в избранное" Click="AddToFavoritesBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
                                Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}" 
                                Background="Black" BorderBrush="{StaticResource GoldAccentBrush}" Foreground="White" Padding="24,12" MinWidth="200" CornerRadius="4" FontSize="16"/>
 

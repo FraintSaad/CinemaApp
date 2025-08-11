@@ -15,6 +15,12 @@
 		<PublishAot>false</PublishAot>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Commands\**" />
+	  <EmbeddedResource Remove="Commands\**" />
+	  <None Remove="Commands\**" />
+	  <Page Remove="Commands\**" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
@@ -22,6 +28,6 @@
 	  <ProjectReference Include="..\Data\Data.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Commands\" />
+	  <PRIResource Remove="Commands\**" />
 	</ItemGroup>
 </Project>

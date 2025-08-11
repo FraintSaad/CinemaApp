@@ -52,6 +52,12 @@ namespace CinemaApp
         private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             var scrollViewer = sender as ScrollViewer;
+            LoadFilmsIfScrolledDownAsync(scrollViewer);
+           
+        }
+
+        private async void LoadFilmsIfScrolledDownAsync(ScrollViewer scrollViewer)
+        {
             if (scrollViewer == null || _isLoading)
             {
                 return;
@@ -87,16 +93,13 @@ namespace CinemaApp
             Frame.Navigate(typeof(MainPage));
         }
 
-        private void addToFavoritesBtn_Click(object sender, RoutedEventArgs e)
+        private void AddToFavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
-
-            // Получить фильм на котором нажата кнопка
             var film = (((Button)sender).DataContext as FilmModel)!;
-            addToFavorites(film);
-
+            AddToFavorites(film);
         }
 
-        private void addToFavorites(FilmModel film)
+        private void AddToFavorites(FilmModel film)
         {
             if (film.IsInFavorites)
             {
