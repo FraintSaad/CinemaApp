@@ -88,7 +88,8 @@
                                     </StackPanel>
                                 </StackPanel>
 
-                                <Button x:Name="AddToFavoritesBtn" Grid.Row="3" Visibility="{Binding IsInFavorites, Mode=TwoWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}" Click="AddToFavoritesBtn_Click">
+                                <Button x:Name="AddToFavoritesBtn" Grid.Row="3" Visibility="{Binding IsInFavorites, Mode=TwoWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}"
+                                        Command="{Binding MainViewModel.AddToFavoritesCommand}" CommandParameter="{Binding}">
                                     <StackPanel Orientation="Horizontal" Spacing="10">
                                         <SymbolIcon Symbol="Favorite" Foreground="White"/>
                                         <TextBlock Text="Добавить в избранное" VerticalAlignment="Center" Foreground="White"/>

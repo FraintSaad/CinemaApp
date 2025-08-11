@@ -1,5 +1,6 @@
 ﻿using CinemaApp.Models;
 using CinemaApp.Services;
+using CinemaApp.ViewModels;
 using Data.Context;
 using Data.Entities;
 using System;
@@ -35,7 +36,7 @@ namespace CinemaApp
         public MainPage()
         {
             this.InitializeComponent();
-            DataContext = this;
+            this.DataContext = new MainViewModel();
             _filmService = new FilmService();
             _dbContext = new FilmsDbContext();
         }
@@ -123,14 +124,11 @@ namespace CinemaApp
                 Type = film.Type ?? string.Empty,
             };
 
-
-
             // Добавить FilmEntity в базу данных
             _dbContext.FavoriteFilms.Add(filmEntity);
             _dbContext.SaveChanges();
 
             film.IsInFavorites = true;
-
         }
         private void DeleteFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
         {
