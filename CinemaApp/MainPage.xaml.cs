@@ -1,12 +1,5 @@
-﻿using CinemaApp.Models;
-using CinemaApp.ViewModels;
-using Data.Entities;
+﻿using CinemaApp.ViewModels;
 using Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -21,9 +14,11 @@ namespace CinemaApp
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            MainViewModel vm = (MainViewModel)DataContext;
+            await vm.LoadFilmsAsync(0);
         }
 
         private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)

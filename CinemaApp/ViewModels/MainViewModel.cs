@@ -1,6 +1,4 @@
-﻿
-using CinemaApp.Models;
-using CinemaApp.Services;
+﻿using CinemaApp.Services;
 using Data.Context;
 using Data.Entities;
 using Data.Models;
@@ -10,13 +8,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
 
 namespace CinemaApp.ViewModels
 {
@@ -24,35 +18,30 @@ namespace CinemaApp.ViewModels
     {
         private readonly FilmsDbContext _dbContext;
         private readonly FilmService _filmService;
-
         private bool _isLoading = false;
         private bool _isNameDescending = true;
         private bool _isYearDescending = true;
         private bool _isRatingDescending = true;
         private int _page = 1;
-
         public ICommand AddToFavoritesCommand { get; }
         public ICommand DeleteFromFavoritesCommand { get; }
         public ICommand SortByNameCommand { get; }
         public ICommand SortByRatingCommand { get; }
         public ICommand SortByYearCommand { get; }
-
         public ObservableCollection<FilmModel> Films { get; } = new ObservableCollection<FilmModel>();
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainViewModel()
         {
             _filmService = new FilmService();
             _dbContext = new FilmsDbContext();
-
             AddToFavoritesCommand = new MyCommand(AddToFavoritesCommandHandler);
             DeleteFromFavoritesCommand = new MyCommand(DeleteFromFavoritesCommandHandler);
             SortByNameCommand = new MyCommand(SortByNameCommandHandler);
             SortByRatingCommand = new MyCommand(SortByRatingCommandHandler);
             SortByYearCommand = new MyCommand(SortByYearCommandHandler);
-            LoadFilmsAsync(_page).ConfigureAwait(false);
         }
+
         public async Task LoadFilmsAsync(int offset)
         {
             var films = await _filmService.GetFilmsAsync(offset);
@@ -60,16 +49,12 @@ namespace CinemaApp.ViewModels
             {
                 return;
             }
-
             foreach (var film in films)
             {
                 Films.Add(film);
             }
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Films)));
         }
-
-
 
         private void AddToFavoritesCommandHandler(object? parameter)
         {
@@ -80,11 +65,11 @@ namespace CinemaApp.ViewModels
         private void AddToFavorites(FilmModel film)
         {
             if (film == null || film.IsInFavorites)
+            {
                 return;
-
+            }
             _dbContext.FavoriteFilms.Add(FilmEntity.FromFilmModel(film));
             _dbContext.SaveChanges();
-
             film.IsInFavorites = true;
         }
 
@@ -104,11 +89,10 @@ namespace CinemaApp.ViewModels
             _dbContext.ChangeTracker.Clear();
             _dbContext.FavoriteFilms.Remove(filmEntity);
             _dbContext.SaveChanges();
-
             film.IsInFavorites = false;
         }
-        
-        private void SortByNameCommandHandler(object? parameter) 
+
+        private void SortByNameCommandHandler(object? parameter)
         {
             SortByName();
         }
@@ -129,10 +113,7 @@ namespace CinemaApp.ViewModels
             Films.Clear();
             foreach (var film in sortedFilms)
             {
-                if (!Films.Contains(film))
-                {
-                    Films.Add(film);
-                }
+                Films.Add(film);
             }
         }
 
@@ -143,12 +124,13 @@ namespace CinemaApp.ViewModels
 
         private void SortByRating()
         {
-            if (Films == null || Films.Count == 0) return;
-        
+            if (Films == null || Films.Count == 0)
+            {
+                return;
+            }
             List<FilmModel> sortedFilms;
             if (_isRatingDescending)
             {
-        
                 sortedFilms = Films.OrderByDescending(f => f.RatingKinopoisk).ToList();
             }
             else
@@ -159,10 +141,7 @@ namespace CinemaApp.ViewModels
             Films.Clear();
             foreach (var film in sortedFilms)
             {
-                if (!Films.Contains(film))
-                {
-                    Films.Add(film);
-                }
+                Films.Add(film);
             }
         }
 
@@ -172,12 +151,13 @@ namespace CinemaApp.ViewModels
         }
         private void SortByYear()
         {
-            if (Films == null || Films.Count == 0) return;
-
+            if (Films == null || Films.Count == 0)
+            {
+                return;
+            }
             List<FilmModel> sortedFilms;
             if (_isYearDescending)
             {
-
                 sortedFilms = Films.OrderByDescending(f => f.Year).ToList();
             }
             else
@@ -188,10 +168,7 @@ namespace CinemaApp.ViewModels
             Films.Clear();
             foreach (var film in sortedFilms)
             {
-                if (!Films.Contains(film))
-                {
-                    Films.Add(film);
-                }
+                Films.Add(film);
             }
         }
 
@@ -201,9 +178,7 @@ namespace CinemaApp.ViewModels
             {
                 return;
             }
-
             var scrollThreshhold = scrollViewer.ScrollableHeight * 0.8;
-
             try
             {
                 if (scrollViewer.VerticalOffset >= scrollThreshhold)
@@ -222,6 +197,4 @@ namespace CinemaApp.ViewModels
             }
         }
     }
-
-
 }

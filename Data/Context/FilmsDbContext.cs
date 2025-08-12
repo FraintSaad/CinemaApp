@@ -12,7 +12,6 @@ namespace Data.Context
         {
             var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var connectionString = $"Data Source={Path.Combine(localAppDataPath, "CinemaAppDB.db")}";
-
             optionsBuilder.UseSqlite(connectionString);
         }
     }

@@ -17,19 +17,18 @@ namespace CinemaApp.ViewModels
     {
         public FilmModel CurrentFilm { get; set; }
         private readonly FilmsDbContext _dbContext = new FilmsDbContext();
-
         public ICommand AddToFavoritesCommand { get; }
         public ICommand DeleteFromFavoritesCommand { get; }
-
         public string CountriesString => GetCountriesString(CurrentFilm?.Countries);
         public string GenresString => GetGenresString(CurrentFilm?.Genres);
+
         public FilmPageViewModel()
         {
             AddToFavoritesCommand = new MyCommand(AddToFavoritesCommandHandler);
             DeleteFromFavoritesCommand = new MyCommand(DeleteFromFavoritesCommandHandler);
         }
 
-        public void Initialize(object navigationParameter)
+        public void ConvertCurrentFilmType(object navigationParameter)
         {
             if (navigationParameter is FilmModel film)
             {
