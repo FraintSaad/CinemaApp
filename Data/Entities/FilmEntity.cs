@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Data.Entities
 {
@@ -21,5 +22,24 @@ namespace Data.Entities
         public double? RatingImdb { get; set; } = null;
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
+
+        public static FilmEntity FromFilmModel(FilmModel film)
+        {
+            var filmEntity = new FilmEntity
+            {
+                KinopoiskId = film.KinopoiskId,
+                NameRu = film.NameRu ?? string.Empty,
+                NameEn = film.NameEn ?? string.Empty,
+                NameOriginal = film.NameOriginal ?? string.Empty,
+                PosterUrlPreview = film.PosterUrlPreview ?? string.Empty,
+                Countries = film.Countries != null ? string.Join(",", film.Countries.Select(c => c.Name)) : string.Empty,
+                Genres = film.Genres != null ? string.Join(",", film.Genres) : string.Empty,
+                RatingImdb = film.RatingImdb,
+                RatingKinopoisk = film.RatingKinopoisk,
+                Year = film.Year,
+                Type = film.Type ?? string.Empty,
+            };
+            return filmEntity;
+        }
     }
 }

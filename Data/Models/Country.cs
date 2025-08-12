@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CinemaApp.Models
+namespace Data.Models
 {
     public class Country
     {

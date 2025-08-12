@@ -28,10 +28,7 @@ namespace CinemaApp
         public FavoritesPage()
         {
             this.InitializeComponent();
-            //Loaded += async (s, e) => await LoadFavoritesAsync();
         }
-
-       
 
         private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
         {

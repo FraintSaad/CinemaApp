@@ -1,6 +1,7 @@
 ﻿using CinemaApp.Models;
 using Data.Context;
 using Data.Entities;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;

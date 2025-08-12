@@ -1,6 +1,7 @@
 ﻿using CinemaApp.Models;
 using Data.Context;
 using Data.Entities;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,24 @@ namespace CinemaApp.ViewModels
         public ICommand AddToFavoritesCommand { get; }
         public ICommand DeleteFromFavoritesCommand { get; }
 
+        public string CountriesString => GetCountriesString(CurrentFilm?.Countries);
+        public string GenresString => GetGenresString(CurrentFilm?.Genres);
         public FilmPageViewModel()
         {
             AddToFavoritesCommand = new MyCommand(AddToFavoritesCommandHandler);
             DeleteFromFavoritesCommand = new MyCommand(DeleteFromFavoritesCommandHandler);
+        }
+
+        public void Initialize(object navigationParameter)
+        {
+            if (navigationParameter is FilmModel film)
+            {
+                CurrentFilm = film;
+            }
+            else if (navigationParameter is FilmEntity entity)
+            {
+                CurrentFilm = FilmModel.FromFilmEntity(entity);
+            }
         }
 
         private void AddToFavoritesCommandHandler(object? parameter)
@@ -32,24 +47,12 @@ namespace CinemaApp.ViewModels
         }
         private void AddToFavorites()
         {
-            if (CurrentFilm == null) return;
-
-            var filmEntity = new FilmEntity
+            if (CurrentFilm == null)
             {
-                KinopoiskId = CurrentFilm.KinopoiskId,
-                NameRu = CurrentFilm.NameRu ?? string.Empty,
-                NameEn = CurrentFilm.NameEn ?? string.Empty,
-                NameOriginal = CurrentFilm.NameOriginal ?? string.Empty,
-                PosterUrlPreview = CurrentFilm.PosterUrlPreview ?? string.Empty,
-                RatingImdb = CurrentFilm.RatingImdb,
-                RatingKinopoisk = CurrentFilm.RatingKinopoisk,
-                Year = CurrentFilm.Year,
-                Type = CurrentFilm.Type ?? string.Empty
-            };
-            // Добавить FilmEntity в базу данных
-            _dbContext.FavoriteFilms.Add(filmEntity);
+                return;
+            }
+            _dbContext.FavoriteFilms.Add(FilmEntity.FromFilmModel(CurrentFilm));
             _dbContext.SaveChanges();
-
             CurrentFilm.IsInFavorites = true;
         }
 
@@ -73,6 +76,16 @@ namespace CinemaApp.ViewModels
 
             CurrentFilm.IsInFavorites = false;
 
+        }
+
+        private string GetCountriesString(List<Country> countries)
+        {
+            return countries != null ? string.Join(", ", countries.Select(c => c.Name)) : string.Empty;
+        }
+
+        private string GetGenresString(List<Genre> genres)
+        {
+            return genres != null ? string.Join(", ", genres.Select(c => c.Name)) : string.Empty;
         }
     }
 }

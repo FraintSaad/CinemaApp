@@ -1,6 +1,8 @@
 ﻿using CinemaApp.Models;
+using CinemaApp.ViewModels;
 using Data.Context;
 using Data.Entities;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,8 +23,6 @@ namespace CinemaApp
 {
     public sealed partial class FilmPage : Page
     {
-        public FilmModel CurrentFilm { get; set; }
-        private readonly FilmsDbContext _dbContext = new FilmsDbContext();
 
         public FilmPage()
         {
@@ -33,40 +33,10 @@ namespace CinemaApp
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is FilmModel film)
+            FilmPageViewModel vm = (FilmPageViewModel)DataContext;
             {
-                CurrentFilm = film;
+                vm.Initialize(e.Parameter);
             }
-            else if (e.Parameter is FilmEntity entity)
-            {
-                {
-                    FilmModel convertedFilm = new FilmModel
-                    {
-
-                        KinopoiskId = entity.KinopoiskId,
-                        NameRu = entity.NameRu ?? string.Empty,
-                        NameEn = entity.NameEn ?? string.Empty,
-                        NameOriginal = entity.NameOriginal ?? string.Empty,
-                        PosterUrlPreview = entity.PosterUrlPreview ?? string.Empty,
-                        RatingImdb = entity.RatingImdb,
-                        RatingKinopoisk = entity.RatingKinopoisk,
-                        Year = entity.Year,
-                        Type = entity.Type ?? string.Empty,
-                        IsInFavorites = true
-                    };
-                    CurrentFilm = convertedFilm;
-                }
-            }
-        }
-
-        private string GetCountriesString(List<Country> countries)
-        {
-            return countries != null ? string.Join(", ", countries.Select(c => c.Name)) : string.Empty;
-        }
-
-        private string GetGenresString(List<Genre> genres)
-        {
-            return genres != null ? string.Join(", ", genres.Select(c => c.Name)) : string.Empty;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

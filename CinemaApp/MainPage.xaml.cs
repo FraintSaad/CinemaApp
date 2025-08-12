@@ -1,6 +1,7 @@
 ﻿using CinemaApp.Models;
 using CinemaApp.ViewModels;
 using Data.Entities;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

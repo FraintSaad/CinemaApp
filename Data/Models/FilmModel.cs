@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Data.Entities;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
-namespace CinemaApp.Models
+namespace Data.Models
 {
     public class FilmModel : INotifyPropertyChanged
     {
@@ -43,6 +44,23 @@ namespace CinemaApp.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public static FilmModel FromFilmEntity(FilmEntity entity)
+        {
+            FilmModel filmModel = new FilmModel
+            {
 
+                KinopoiskId = entity.KinopoiskId,
+                NameRu = entity.NameRu ?? string.Empty,
+                NameEn = entity.NameEn ?? string.Empty,
+                NameOriginal = entity.NameOriginal ?? string.Empty,
+                PosterUrlPreview = entity.PosterUrlPreview ?? string.Empty,
+                RatingImdb = entity.RatingImdb,
+                RatingKinopoisk = entity.RatingKinopoisk,
+                Year = entity.Year,
+                Type = entity.Type ?? string.Empty,
+                IsInFavorites = true
+            };
+            return filmModel;
+        }
     }
 }

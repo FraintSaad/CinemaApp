@@ -3,6 +3,7 @@ using CinemaApp.Models;
 using CinemaApp.Services;
 using Data.Context;
 using Data.Entities;
+using Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -81,22 +82,7 @@ namespace CinemaApp.ViewModels
             if (film == null || film.IsInFavorites)
                 return;
 
-            var filmEntity = new FilmEntity
-            {
-                KinopoiskId = film.KinopoiskId,
-                NameRu = film.NameRu ?? string.Empty,
-                NameEn = film.NameEn ?? string.Empty,
-                NameOriginal = film.NameOriginal ?? string.Empty,
-                PosterUrlPreview = film.PosterUrlPreview ?? string.Empty,
-                Countries = film.Countries != null ? string.Join(",", film.Countries.Select(c => c.Name)) : string.Empty,
-                Genres = film.Genres != null ? string.Join(",", film.Genres) : string.Empty,
-                RatingImdb = film.RatingImdb,
-                RatingKinopoisk = film.RatingKinopoisk,
-                Year = film.Year,
-                Type = film.Type ?? string.Empty,
-            };
-
-            _dbContext.FavoriteFilms.Add(filmEntity);
+            _dbContext.FavoriteFilms.Add(FilmEntity.FromFilmModel(film));
             _dbContext.SaveChanges();
 
             film.IsInFavorites = true;
