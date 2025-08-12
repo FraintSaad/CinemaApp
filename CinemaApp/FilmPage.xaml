@@ -4,9 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CinemaApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:CinemaApp.Models" xmlns:local1="using:CinemaApp.Converters"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:CinemaApp.Models"
+    xmlns:local1="using:CinemaApp.Converters" xmlns:local2="using:CinemaApp.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.DataContext>
+        <local2:FilmPageViewModel/>
+    </Page.DataContext>
 
     <Page.Resources>
         <local1:VisibleConverter x:Key="VisibleConverter"/>
@@ -90,11 +95,15 @@
                     <Border Height="1" Margin="0,25,0,25" Background="{StaticResource GoldAccentBrush}" Opacity="0.3"/>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                        <Button x:Name="AddToFavoritesBtn" Content="Добавить в избранное" Click="AddToFavoritesBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                        <Button x:Name="AddToFavoritesBtn" Content="Добавить в избранное"
+                                Command="{Binding DataContext.AddToFavoritesCommand,ElementName=CurrentFilm}" 
+                                PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
                                Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}, ConverterParameter=add}" 
                                Background="Black" BorderBrush="{StaticResource GoldAccentBrush}" Foreground="White" Padding="24,12" MinWidth="200" CornerRadius="4" FontSize="16"/>
 
-                        <Button x:Name="DeleteFromFavoritesBtn" Content="Удалить из избранного" Click="DeleteFromFavoritesBtn_Click" PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
+                        <Button x:Name="DeleteFromFavoritesBtn" Content="Удалить из избранного"
+                                Command="{Binding DataContext.DeleteFromFavoritesCommand,ElementName=CurrentFilm}"
+                                PointerEntered="CursorEntered_PointerEntered" PointerExited="CursorExited_PointerExited"
                                Visibility="{x:Bind CurrentFilm.IsInFavorites, Mode=OneWay, Converter={StaticResource VisibleConverter}}"  
                                Background="Black" BorderBrush="Red" Foreground="White" Padding="24,12" MinWidth="200" CornerRadius="4" FontSize="16"/>
                     </StackPanel>

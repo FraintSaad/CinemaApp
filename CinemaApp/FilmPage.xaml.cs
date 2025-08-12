@@ -77,58 +77,6 @@ namespace CinemaApp
             }
         }
 
-        private void AddToFavoritesBtn_Click(object sender, RoutedEventArgs e)
-        {
-            AddToFavorites();
-        }
-
-        private void AddToFavorites()
-        {
-            if (CurrentFilm == null) return;
-
-            var filmEntity = new FilmEntity
-            {
-                KinopoiskId = CurrentFilm.KinopoiskId,
-                NameRu = CurrentFilm.NameRu ?? string.Empty,
-                NameEn = CurrentFilm.NameEn ?? string.Empty,
-                NameOriginal = CurrentFilm.NameOriginal ?? string.Empty,
-                PosterUrlPreview = CurrentFilm.PosterUrlPreview ?? string.Empty,
-                RatingImdb = CurrentFilm.RatingImdb,
-                RatingKinopoisk = CurrentFilm.RatingKinopoisk,
-                Year = CurrentFilm.Year,
-                Type = CurrentFilm.Type ?? string.Empty
-            };
-
-            if (CurrentFilm.IsInFavorites == false)
-            {
-                // Добавить FilmEntity в базу данных
-                _dbContext.FavoriteFilms.Add(filmEntity);
-                _dbContext.SaveChanges();
-            }
-            CurrentFilm.IsInFavorites = true;
-        }
-
-        private void DeleteFromFavoritesBtn_Click(object sender, RoutedEventArgs e)
-        {
-            DeleteFromFavorites();
-        }
-
-        private void DeleteFromFavorites()
-        {
-            if (CurrentFilm == null) return;
-
-            var filmEntity = _dbContext.FavoriteFilms
-                .FirstOrDefault(f => f.KinopoiskId == CurrentFilm.KinopoiskId);
-
-            if (filmEntity != null)
-            {
-                _dbContext.FavoriteFilms.Remove(filmEntity);
-                _dbContext.SaveChanges();
-
-                CurrentFilm.IsInFavorites = false;
-            }
-        }
-
         private void CursorEntered_PointerEntered(object sender, PointerRoutedEventArgs e)
         {
            Window.Current.CoreWindow.PointerCursor = new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);

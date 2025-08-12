@@ -43,7 +43,6 @@ namespace CinemaApp.ViewModels
             {
                 FavoriteFilms.Add(film);
             }
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FavoriteFilms)));
         }
 
         private void RemoveFromFavoritesCommandHandler(object? parameter)
@@ -55,7 +54,8 @@ namespace CinemaApp.ViewModels
         {
             _dbContext.FavoriteFilms.Remove(film);
             _dbContext.SaveChanges();
-           
+            FavoriteFilms.Remove(film);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FavoriteFilms)));
         }
     }
 }
