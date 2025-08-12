@@ -20,176 +20,35 @@ namespace CinemaApp
             this.InitializeComponent();
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
         }
 
-        //private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        //{
-        //    var scrollViewer = sender as ScrollViewer;
-        //    LoadFilmsIfScrolledDownAsync(scrollViewer);
-        //}
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            var scrollViewer = sender as ScrollViewer;
+            MainViewModel vm = (MainViewModel)DataContext;
+            vm.LoadFilmsIfScrolledDownAsync(scrollViewer);
+        }
 
-        //private async void LoadFilmsIfScrolledDownAsync(ScrollViewer scrollViewer)
-        //{
-        //    if (scrollViewer == null || _isLoading)
-        //    {
-        //        return;
-        //    }
-
-        //    var scrollThreshhold = scrollViewer.ScrollableHeight * 0.8;
-
-        //    try
-        //    {
-        //        if (scrollViewer.VerticalOffset >= scrollThreshhold)
-        //        {
-        //            _isLoading = true;
-        //            await LoadFilmsAsync(page++);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Debug.WriteLine($"Ошибка загрузки: {ex.Message}");
-        //    }
-        //    finally
-        //    {
-        //        _isLoading = false;
-        //    }
-        //}
-
-       private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
-       {
-           Frame.Navigate(typeof(FavoritesPage));
-       }
+        private void FavoritesBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(FavoritesPage));
+        }
 
         private void MainPageBtn_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
         }
 
-        
-        
-        
-        
-        
-
-        
-        
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        
-        
-
-
-        
-        
-        
-        
-
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        
-        
-        
-        
-
-        
-        
-        
-
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        
-        
-        
-
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        //private void MyListView_ItemClick(object sender, ItemClickEventArgs e)
-        //{
-        //    if (e.ClickedItem is FilmModel film)
-        //    {
-        //        Frame.Navigate(typeof(FilmPage), film);
-        //    }
-        //}
+        private void MyListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (e.ClickedItem is FilmModel film)
+            {
+                Frame.Navigate(typeof(FilmPage), film);
+            }
+        }
 
         private void CursorEntered_PointerEntered(object sender, PointerRoutedEventArgs e)
         {

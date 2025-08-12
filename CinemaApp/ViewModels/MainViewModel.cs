@@ -3,6 +3,7 @@ using CinemaApp.Models;
 using CinemaApp.Services;
 using Data.Context;
 using Data.Entities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -208,7 +209,32 @@ namespace CinemaApp.ViewModels
             }
         }
 
-     
+        public async void LoadFilmsIfScrolledDownAsync(ScrollViewer scrollViewer)
+        {
+            if (scrollViewer == null || _isLoading)
+            {
+                return;
+            }
+
+            var scrollThreshhold = scrollViewer.ScrollableHeight * 0.8;
+
+            try
+            {
+                if (scrollViewer.VerticalOffset >= scrollThreshhold)
+                {
+                    _isLoading = true;
+                    await LoadFilmsAsync(_page++);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Ошибка загрузки: {ex.Message}");
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+        }
     }
 
 
