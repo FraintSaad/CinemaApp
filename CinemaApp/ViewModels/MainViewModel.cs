@@ -17,179 +17,171 @@ namespace CinemaApp.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly FilmsDbContext _dbContext;
-        private readonly FilmService _filmService;
+        private readonly TmdbService _tmdbService;
         private bool _isLoading = false;
         private bool _isNameDescending = true;
         private bool _isYearDescending = true;
         private bool _isRatingDescending = true;
         private int _page = 1;
+
         public ICommand AddToFavoritesCommand { get; }
         public ICommand DeleteFromFavoritesCommand { get; }
         public ICommand SortByNameCommand { get; }
         public ICommand SortByRatingCommand { get; }
         public ICommand SortByYearCommand { get; }
-        public ObservableCollection<FilmModel> Films { get; } = new ObservableCollection<FilmModel>();
+
+        public ObservableCollection<TmdbFilmModel> Films { get; } = new ObservableCollection<TmdbFilmModel>();
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainViewModel()
         {
-            _filmService = new FilmService();
+            _tmdbService = new TmdbService();
             _dbContext = new FilmsDbContext();
+
             AddToFavoritesCommand = new MyCommand(AddToFavoritesCommandHandler);
             DeleteFromFavoritesCommand = new MyCommand(DeleteFromFavoritesCommandHandler);
             SortByNameCommand = new MyCommand(SortByNameCommandHandler);
             SortByRatingCommand = new MyCommand(SortByRatingCommandHandler);
             SortByYearCommand = new MyCommand(SortByYearCommandHandler);
+
+            // Загружаем первые фильмы сразу
+            _ = LoadFilmsAsync(_page);
         }
 
-        public async Task LoadFilmsAsync(int offset)
+        public async Task LoadFilmsAsync(int page)
         {
-            var films = await _filmService.GetFilmsAsync(offset);
-            if (films == null)
+            try
             {
-                return;
+                var films = await _tmdbService.GetPopularFilmsAsync(page);
+
+                if (films == null) return;
+
+                foreach (TmdbFilmModel film in films)
+                {
+                    // Проверяем, есть ли в избранном через KinopoiskId
+                    var local = _dbContext.FavoriteFilms.FirstOrDefault(f => f.KinopoiskId == film.Id);
+                    if (local != null) film.IsInFavorites = true;
+
+                    Films.Add(film);
+                }
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Films)));
             }
-            foreach (var film in films)
+            catch (Exception ex)
             {
-                Films.Add(film);
+                Debug.WriteLine($"Ошибка загрузки фильмов: {ex.Message}");
             }
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Films)));
         }
 
         private void AddToFavoritesCommandHandler(object? parameter)
         {
-            var film = parameter as FilmModel;
+            var film = parameter as TmdbFilmModel;
             AddToFavorites(film!);
         }
 
-        private void AddToFavorites(FilmModel film)
+        private void AddToFavorites(TmdbFilmModel film)
         {
-            if (film == null || film.IsInFavorites)
+            if (film == null || film.IsInFavorites) return;
+
+            // Конвертируем TmdbFilmModel → FilmEntity для базы
+            var entity = new FilmEntity
             {
-                return;
-            }
-            _dbContext.FavoriteFilms.Add(FilmEntity.FromFilmModel(film));
+                KinopoiskId = film.Id,
+                NameRu = film.Title ?? string.Empty,
+                NameOriginal = film.OriginalTitle ?? string.Empty,
+                Year = film.Year,
+                PosterUrlPreview = film.PosterPath ?? string.Empty,
+                RatingKinopoisk = film.VoteAverage,
+                RatingImdb = film.VoteAverage
+            };
+
+            _dbContext.FavoriteFilms.Add(entity);
             _dbContext.SaveChanges();
             film.IsInFavorites = true;
         }
 
         private void DeleteFromFavoritesCommandHandler(object? parameter)
         {
-            var film = parameter as FilmModel;
+            var film = parameter as TmdbFilmModel;
             DeleteFromFavorites(film!);
         }
 
-        private void DeleteFromFavorites(FilmModel film)
+        private void DeleteFromFavorites(TmdbFilmModel film)
         {
-            if (!film.IsInFavorites)
-            {
-                return;
-            }
-            var filmEntity = _dbContext.Find<FilmEntity>(film.KinopoiskId);
+            if (!film.IsInFavorites) return;
+
+            var filmEntity = _dbContext.FavoriteFilms.FirstOrDefault(f => f.KinopoiskId == film.Id);
+            if (filmEntity == null) return;
+
             _dbContext.ChangeTracker.Clear();
             _dbContext.FavoriteFilms.Remove(filmEntity);
             _dbContext.SaveChanges();
             film.IsInFavorites = false;
         }
 
-        private void SortByNameCommandHandler(object? parameter)
-        {
-            SortByName();
-        }
+        private void SortByNameCommandHandler(object? parameter) => SortByName();
+
         private void SortByName()
         {
-            if (Films == null || Films.Count == 0) return;
+            if (Films.Count == 0) return;
 
-            List<FilmModel> sortedFilms;
-            if (_isNameDescending)
-            {
-                sortedFilms = Films.OrderByDescending(f => string.IsNullOrEmpty(f.NameRu) ? f.NameOriginal : f.NameRu).ToList();
-            }
-            else
-            {
-                sortedFilms = Films.OrderBy(f => string.IsNullOrEmpty(f.NameRu) ? f.NameOriginal : f.NameRu).ToList();
-            }
+            var sorted = _isNameDescending
+                ? Films.OrderByDescending(f => string.IsNullOrEmpty(f.Title) ? f.OriginalTitle : f.Title).ToList()
+                : Films.OrderBy(f => string.IsNullOrEmpty(f.Title) ? f.OriginalTitle : f.Title).ToList();
+
             _isNameDescending = !_isNameDescending;
             Films.Clear();
-            foreach (var film in sortedFilms)
-            {
-                Films.Add(film);
-            }
+            foreach (var f in sorted) Films.Add(f);
         }
 
-        private void SortByRatingCommandHandler(object? parameter)
-        {
-            SortByRating();
-        }
+        private void SortByRatingCommandHandler(object? parameter) => SortByRating();
 
         private void SortByRating()
         {
-            if (Films == null || Films.Count == 0)
-            {
-                return;
-            }
-            List<FilmModel> sortedFilms;
-            if (_isRatingDescending)
-            {
-                sortedFilms = Films.OrderByDescending(f => f.RatingKinopoisk).ToList();
-            }
-            else
-            {
-                sortedFilms = Films.OrderBy(f => f.RatingKinopoisk).ToList();
-            }
+            if (Films.Count == 0) return;
+
+            var sorted = _isRatingDescending
+                ? Films.OrderByDescending(f => f.VoteAverage).ToList()
+                : Films.OrderBy(f => f.VoteAverage).ToList();
+
             _isRatingDescending = !_isRatingDescending;
             Films.Clear();
-            foreach (var film in sortedFilms)
-            {
-                Films.Add(film);
-            }
+            foreach (var f in sorted) Films.Add(f);
         }
 
-        private void SortByYearCommandHandler(object? parameter)
-        {
-            SortByYear();
-        }
+        private void SortByYearCommandHandler(object? parameter) => SortByYear();
+
         private void SortByYear()
         {
-            if (Films == null || Films.Count == 0)
-            {
-                return;
-            }
-            List<FilmModel> sortedFilms;
-            if (_isYearDescending)
-            {
-                sortedFilms = Films.OrderByDescending(f => f.Year).ToList();
-            }
-            else
-            {
-                sortedFilms = Films.OrderBy(f => f.Year).ToList();
-            }
+            if (Films.Count == 0) return;
+
+            var sorted = _isYearDescending
+                ? Films.OrderByDescending(f => f.Year).ToList()
+                : Films.OrderBy(f => f.Year).ToList();
+
             _isYearDescending = !_isYearDescending;
             Films.Clear();
-            foreach (var film in sortedFilms)
-            {
-                Films.Add(film);
-            }
+            foreach (var f in sorted) Films.Add(f);
         }
 
         public async void LoadFilmsIfScrolledDownAsync(ScrollViewer scrollViewer)
         {
-            if (scrollViewer == null || _isLoading)
-            {
-                return;
-            }
-            var scrollThreshhold = scrollViewer.ScrollableHeight * 0.8;
+            if (scrollViewer == null || _isLoading) return;
+
+            var scrollThreshold = scrollViewer.ScrollableHeight * 0.8;
+
             try
             {
-                if (scrollViewer.VerticalOffset >= scrollThreshhold)
+                if (scrollViewer.VerticalOffset >= scrollThreshold)
                 {
                     _isLoading = true;
-                    await LoadFilmsAsync(_page++);
+                    await LoadFilmsAsync(++_page);
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Ошибка загрузки: {ex.Message}");
+                Debug.WriteLine($"Ошибка подгрузки фильмов: {ex.Message}");
             }
             finally
             {
