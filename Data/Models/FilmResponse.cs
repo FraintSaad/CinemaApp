@@ -7,6 +7,6 @@ namespace CinemaApp.Models
     {
         public int Total { get; set; }
         public int TotalPages { get; set; }
-        public List<FilmModel>? Items { get; set; }
+        public List<TmdbFilmModel>? Items { get; set; }
     }
 }

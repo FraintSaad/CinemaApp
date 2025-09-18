@@ -1,4 +1,4 @@
-﻿using CinemaApp.Services;
+﻿using CinemaApplication.Services;
 using Data.Context;
 using Data.Entities;
 using Data.Models;

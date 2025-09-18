@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace CinemaApp.Services
+namespace CinemaApplication.Services
 {
     public class FilmService
     {
@@ -27,7 +27,7 @@ namespace CinemaApp.Services
             _dbContext = new FilmsDbContext();
         }
 
-        public async Task<List<FilmModel>> GetFilmsAsync(int offset)
+        public async Task<List<TmdbFilmModel>> GetFilmsAsync(int offset)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace CinemaApp.Services
                 {
                     foreach (var item in _dbContext.FavoriteFilms)
                     {
-                        var local = _dbContext.Set<FilmEntity>().FirstOrDefault(item => item.KinopoiskId.Equals(film.KinopoiskId));
+                        var local = _dbContext.Set<FilmEntity>().FirstOrDefault(item => item.KinopoiskId.Equals(film.Id));
 
                         if (local != null)
                         {

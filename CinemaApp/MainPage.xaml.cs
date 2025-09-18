@@ -40,7 +40,7 @@ namespace CinemaApp
 
         private void MyListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (e.ClickedItem is FilmModel film)
+            if (e.ClickedItem is TmdbFilmModel film)
             {
                 Frame.Navigate(typeof(FilmPage), film);
             }

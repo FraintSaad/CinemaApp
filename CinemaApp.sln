@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp", "CinemaApp\Cine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{66BD5846-F343-4926-ADCC-788558FFD702}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApplication", "Application\CinemaApplication.csproj", "{A8549EB3-A69F-44B0-88E9-0764BA8780C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|arm64 = Debug|arm64
@@ -47,6 +49,18 @@ Global
 		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|x64.Build.0 = Release|Any CPU
 		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|x86.ActiveCfg = Release|Any CPU
 		{66BD5846-F343-4926-ADCC-788558FFD702}.Release|x86.Build.0 = Release|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Debug|arm64.ActiveCfg = Debug|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Debug|arm64.Build.0 = Debug|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Debug|x64.Build.0 = Debug|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Debug|x86.Build.0 = Debug|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Release|arm64.ActiveCfg = Release|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Release|arm64.Build.0 = Release|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Release|x64.ActiveCfg = Release|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Release|x64.Build.0 = Release|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Release|x86.ActiveCfg = Release|Any CPU
+		{A8549EB3-A69F-44B0-88E9-0764BA8780C1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
