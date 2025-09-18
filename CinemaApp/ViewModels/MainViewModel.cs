@@ -46,14 +46,14 @@ namespace CinemaApp.ViewModels
             SortByYearCommand = new MyCommand(SortByYearCommandHandler);
 
             // Загружаем первые фильмы сразу
-            _ = LoadFilmsAsync(_page);
+           //_ = LoadFilmsAsync(_page);
         }
 
         public async Task LoadFilmsAsync(int page)
         {
             try
             {
-                var films = await _tmdbService.GetPopularFilmsAsync(page);
+                var films = await _tmdbService.GetPopularFilmsAsync();
 
                 if (films == null) return;
 
@@ -71,6 +71,7 @@ namespace CinemaApp.ViewModels
             catch (Exception ex)
             {
                 Debug.WriteLine($"Ошибка загрузки фильмов: {ex.Message}");
+                throw;
             }
         }
 
