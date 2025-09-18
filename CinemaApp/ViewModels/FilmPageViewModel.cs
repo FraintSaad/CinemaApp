@@ -1,4 +1,4 @@
-﻿using CinemaApp.Models;
+﻿using CinemaPresentation.Models;
 using Data.Context;
 using Data.Entities;
 using Data.Models;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Navigation;
 
-namespace CinemaApp.ViewModels
+namespace CinemaPresentation.ViewModels
 {
     public class FilmPageViewModel
     {

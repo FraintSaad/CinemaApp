@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp", "CinemaApp\CinemaApp.csproj", "{F86B78C1-1EDC-403C-A2A7-60EBAFD57CDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaPresentation", "CinemaApp\CinemaPresentation.csproj", "{F86B78C1-1EDC-403C-A2A7-60EBAFD57CDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{66BD5846-F343-4926-ADCC-788558FFD702}"
 EndProject

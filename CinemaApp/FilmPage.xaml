@@ -1,11 +1,11 @@
 ﻿<Page
-    x:Class="CinemaApp.FilmPage"
+    x:Class="CinemaPresentation.FilmPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:CinemaApp"
+    xmlns:local="using:CinemaPresentation"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:CinemaApp.Models"
-    xmlns:local1="using:CinemaApp.Converters" xmlns:local2="using:CinemaApp.ViewModels"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:models="using:CinemaPresentation.Models"
+    xmlns:local1="using:CinemaPresentation.Converters" xmlns:local2="using:CinemaPresentation.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 

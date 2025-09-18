@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Data.Models;
-using CinemaApp.Models;
+using CinemaPresentation.Models;
 
 namespace CinemaApplication.Services
 {

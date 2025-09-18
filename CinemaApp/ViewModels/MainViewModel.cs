@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
 
-namespace CinemaApp.ViewModels
+namespace CinemaPresentation.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {

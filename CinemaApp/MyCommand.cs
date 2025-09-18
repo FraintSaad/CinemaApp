@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace CinemaApp
+namespace CinemaPresentation
 {
     internal class MyCommand : ICommand
     {

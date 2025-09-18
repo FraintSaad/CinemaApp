@@ -1,7 +1,7 @@
 ﻿using Data.Models;
 using System.Collections.Generic;
 
-namespace CinemaApp.Models
+namespace CinemaPresentation.Models
 {
     public class FilmResponse
     {

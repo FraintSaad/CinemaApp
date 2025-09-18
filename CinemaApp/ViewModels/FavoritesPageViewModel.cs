@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CinemaApp.ViewModels
+namespace CinemaPresentation.ViewModels
 {
     public class FavoritesPageViewModel : INotifyPropertyChanged
     {

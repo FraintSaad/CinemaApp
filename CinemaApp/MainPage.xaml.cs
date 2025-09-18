@@ -1,11 +1,11 @@
-﻿using CinemaApp.ViewModels;
+﻿using CinemaPresentation.ViewModels;
 using Data.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
-namespace CinemaApp
+namespace CinemaPresentation
 {
     public sealed partial class MainPage : Page
     {

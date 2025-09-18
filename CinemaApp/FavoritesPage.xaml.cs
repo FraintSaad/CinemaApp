@@ -3,7 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
-namespace CinemaApp
+namespace CinemaPresentation
 {
     public sealed partial class FavoritesPage : Page
     {
